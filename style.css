@@ -1,0 +1,33 @@
+body {
+    background-color: rgb(191, 240, 191);
+    color: black;
+}
+
+.container {
+    height: 90vh;
+    margin: 2rem;
+    display: grid; 
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-gap: 5px 5px; 
+  }
+  .cell {
+    color: white;
+    background: deepskyblue;
+    font-size: 3rem;
+    text-align: center;
+    padding: 4rem;
+    position: relative;
+  }
+.choice {
+    background-color: Transparent;
+    border:none;
+    display: block;
+    float: none;
+    margin-right: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+}
