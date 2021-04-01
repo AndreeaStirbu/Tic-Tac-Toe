@@ -1,4 +1,5 @@
 var currentUser = 'X';
+let hasWon = false;
 
 var container = document.getElementById("container");
 var cell1 = document.createElement("div");
@@ -11,20 +12,20 @@ var cell7 = document.createElement("div");
 var cell8 = document.createElement("div");
 var cell9 = document.createElement("div");
 
-var cells = [cell1, cell2, cell3, cell4, cell5, cell6, cell7, cell8, cell9];
-
 var cellsMatrix = [
   [cell1, cell2, cell3],
   [cell4, cell5, cell6], 
   [cell7, cell8, cell9]
 ];
 
+//Use a DocumentFragment?
+const frag = document.createDocumentFragment();
 for(i = 0; i < 3; i++) {
   for(j = 0; j < 3; j++){
     let row = i;
     let column = j;
     cellsMatrix[i][j].classList.add('cell');
-    container.appendChild(cellsMatrix[i][j]);
+    frag.appendChild(cellsMatrix[i][j]);
     let idName = "cell-"+ i.toString() + j.toString(); 
     cellsMatrix[i][j].setAttribute("id", idName);
     var button = document.createElement("button");
@@ -34,8 +35,11 @@ for(i = 0; i < 3; i++) {
   }
 }
 
+//Add the document fragment to the div container
+container.appendChild(frag);
+
 function displayOption(elem, row, column) {
-  if(elem.innerHTML == "") { //maybe disable button
+  if(elem.innerHTML == "" && !hasWon) { //maybe disable button
     elem.textContent = currentUser;
     currentUser = currentUser == 'X' ? 'O' : 'X';
     checkWinningCondition(row, column, elem);
@@ -70,6 +74,7 @@ function checkWinningCondition(row, column, elem){
     if(strikeRow == 4 || strikeCol == 4) {
       console.log("Winning");
       alert(elem.textContent + " Wins!");
+      hasWon = true;
       break; 
     }
   
@@ -77,9 +82,9 @@ function checkWinningCondition(row, column, elem){
     strikeCol = 1;
   }
 
-  if(strikeDiagLR == 4 || strikeDiagRL == 4) {
+  if(!hasWon && (strikeDiagLR == 4 || strikeDiagRL == 4)) {
+    hasWon = true;
     console.log("Winning");
     alert(elem.textContent + " Wins!");
   }
 }
-
