@@ -5,8 +5,9 @@ body {
 }
 
 .container {
-    /*height: 90vh;*/
-    margin: 2rem;
+    height: 250px;
+    width: 250px;
+    margin: auto auto;
     display: grid; 
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -15,10 +16,11 @@ body {
   .cell {
     color: white;
     background: deepskyblue;
-    font-size: 3rem;
+    font-size: 2rem;
     text-align: center;
-    padding: 4rem;
+    padding: 1.5rem;
     position: relative;
+    overflow: hidden;
   }
 .choice {
     background-color: Transparent;
@@ -80,4 +82,23 @@ box-shadow: none;
 }
 #reload:hover .icon {
   transform: rotate(360deg) scale(1.2);
+}
+
+
+#status {
+  overflow: hidden;
+  height: 50px;
+  width: 250px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 0;
+}
+
+#game-status {
+  text-align: center;
+  color: deepskyblue;
+}
+
+.winning-cells {
+  color: rgb(9, 99, 129);
 }

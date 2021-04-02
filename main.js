@@ -1,6 +1,8 @@
 var currentUser = 'X';
 let hasWon = false;
 
+var gameStatus = document.querySelector("#game-status");
+
 var container = document.getElementById("container");
 var cell1 = document.createElement("div");
 var cell2 = document.createElement("div");
@@ -31,18 +33,19 @@ for(i = 0; i < 3; i++) {
     var button = document.createElement("button");
     button.classList.add("choice");
     cellsMatrix[i][j].appendChild(button);
-    button.onclick = function() {displayOption(this, row, column);}
+    button.onclick = function() {displayOption(row, column);}
   }
 }
 
 //Add the document fragment to the div container
 container.appendChild(frag);
 
-function displayOption(elem, row, column) {
-  if(elem.innerHTML == "" && !hasWon) { //maybe disable button
-    elem.textContent = currentUser;
+function displayOption(row, column) {
+  if(cellsMatrix[row][column].textContent == "" && !hasWon) { //maybe disable button
+    cellsMatrix[row][column].textContent = currentUser;
     currentUser = currentUser == 'X' ? 'O' : 'X';
-    checkWinningCondition(row, column, elem);
+    gameStatus.textContent = currentUser + " Turn";
+    checkWinningCondition(row, column, cellsMatrix[row][column]);
   }
 }
 
@@ -53,38 +56,68 @@ function checkWinningCondition(row, column, elem){
   let strikeDiagLR = 1;
   let strikeDiagRL = 1;
 
+  let winningRow = new Array(3);
+  let winningCol = new Array(3);
+  let winningDiagLR = new Array(3);
+  let winningDiagRL = new Array(3);
+
   for(i = 0; i < 3; i++) {
     if(cellsMatrix[i][i].textContent == elem.textContent){
       strikeDiagLR++;
+      winningDiagLR.push(cellsMatrix[i][i]);
     }
 
     for(j = 0; j < 3; j++){
       if(cellsMatrix[i][j].textContent == elem.textContent){
         strikeRow++;
+        winningRow.push(cellsMatrix[i][j]);
       }
       if(cellsMatrix[j][i].textContent == elem.textContent){
         strikeCol++;
+        winningCol.push(cellsMatrix[j][i]);
       }
     }
 
     if(cellsMatrix[i][j-1-i].textContent == elem.textContent){
       strikeDiagRL++;
+      winningDiagRL.push(cellsMatrix[i][j-1-i]);
     }
 
-    if(strikeRow == 4 || strikeCol == 4) {
-      console.log("Winning");
-      alert(elem.textContent + " Wins!");
-      hasWon = true;
+    if(strikeRow == 4) {
+      setStatusToWin(text);
+      updateGameBoard(winningRow);
+      break; 
+    }
+
+    if(strikeCol == 4) {
+      setStatusToWin(text);
+      updateGameBoard(winningCol);
       break; 
     }
   
     strikeRow = 1;
     strikeCol = 1;
+
+    winningRow.length = 0;
+    winningCol.length = 0;
   }
 
-  if(!hasWon && (strikeDiagLR == 4 || strikeDiagRL == 4)) {
-    hasWon = true;
-    console.log("Winning");
-    alert(elem.textContent + " Wins!");
+  if(strikeDiagLR == 4) {
+    setStatusToWin(text);
+    updateGameBoard(winningDiagLR);
   }
+
+  if(strikeDiagRL == 4) {
+    setStatusToWin(text);
+    updateGameBoard(winningDiagRL);
+  }
+}
+
+function setStatusToWin(text){
+  gameStatus.textContent = text + " Wins!";
+  hasWon = true;
+}
+
+function updateGameBoard(winningArray){
+ winningArray.forEach(cell => cell.classList.add("winning-cells"));
 }
